@@ -2,6 +2,7 @@
 title: Stepper
 description: A segmented progress bar.
 source: https://github.com/dequelabs/cauldron/tree/develop/packages/react/src/components/Stepper/index.tsx
+storybook: true
 ---
 
 import { Stepper, Step } from '@deque/cauldron-react';
@@ -55,11 +56,37 @@ For more compact steppers, the additional descriptive information can be include
 </Stepper>
 ```
 
+### Vertical
+
+Set `orientation` to `vertical` to stack the steps in a column with each label
+beside its indicator. This is useful when the stepper sits alongside content
+rather than above it, or when step labels are too long to read comfortably
+side by side.
+
+```jsx example
+<Stepper orientation="vertical">
+  <Step status="complete">Select all stuff/things/such</Step>
+  <Step status="current">Analyze the stuff</Step>
+  <Step status="future">Review all of the things, stuff, such and etc.</Step>
+</Stepper>
+```
+
 ## Props
 
 ### Stepper
 
-<ComponentProps children={true} className={true} />
+<ComponentProps
+  children={true}
+  className={true}
+  props={[
+    {
+      name: 'orientation',
+      type: ['horizontal', 'vertical'],
+      defaultValue: 'horizontal',
+      description: 'The direction the steps are laid out in.'
+    }
+  ]}
+/>
 
 ### Step
 

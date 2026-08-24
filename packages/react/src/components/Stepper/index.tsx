@@ -106,10 +106,19 @@ Step.displayName = 'Step';
 interface StepperProps extends React.OlHTMLAttributes<HTMLOListElement> {
   children: React.ReactNode;
   className?: string;
+  orientation?: 'horizontal' | 'vertical';
 }
 
-const Stepper = ({ children, className, ...other }: StepperProps) => (
-  <ol className={classNames('Stepper', className)} {...other}>
+const Stepper = ({
+  children,
+  className,
+  orientation = 'horizontal',
+  ...other
+}: StepperProps) => (
+  <ol
+    className={classNames('Stepper', `Stepper--${orientation}`, className)}
+    {...other}
+  >
     {children}
   </ol>
 );

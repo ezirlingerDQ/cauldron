@@ -77,6 +77,41 @@ test('should set the correct aria-current attribute', () => {
   );
 });
 
+test('should default to a horizontal orientation', () => {
+  render(
+    <Stepper>
+      <Step status="complete">Foo</Step>
+      <Step status="current">Bar</Step>
+    </Stepper>
+  );
+  expect(screen.getByRole('list')).toHaveClass('Stepper--horizontal');
+});
+
+test('should render a vertical orientation', () => {
+  render(
+    <Stepper orientation="vertical">
+      <Step status="complete">Foo</Step>
+      <Step status="current">Bar</Step>
+    </Stepper>
+  );
+  expect(screen.getByRole('list')).toHaveClass('Stepper--vertical');
+  expect(screen.getByRole('list')).not.toHaveClass('Stepper--horizontal');
+});
+
+test('should set the correct aria-current attribute when vertical', () => {
+  render(
+    <Stepper orientation="vertical">
+      <Step status="complete">Foo</Step>
+      <Step status="current">Bar</Step>
+      <Step status="future">Baz</Step>
+    </Stepper>
+  );
+  const steps = screen.getAllByRole('listitem');
+  expect(steps[0]).toHaveAttribute('aria-current', 'false');
+  expect(steps[1]).toHaveAttribute('aria-current', 'step');
+  expect(steps[2]).toHaveAttribute('aria-current', 'false');
+});
+
 test('should return no axe violations', async () => {
   const { container } = render(
     <Stepper>
@@ -92,8 +127,17 @@ test('should return no axe violations', async () => {
     </Stepper>
   );
 
+  const { container: verticalContainer } = render(
+    <Stepper orientation="vertical">
+      <Step status="complete">Foo</Step>
+      <Step status="current">Bar</Step>
+      <Step status="future">Baz</Step>
+    </Stepper>
+  );
+
   expect(await axe(container)).toHaveNoViolations();
   expect(await axe(tooltipContainer)).toHaveNoViolations();
+  expect(await axe(verticalContainer)).toHaveNoViolations();
   expect(
     await axe(
       // manually adding tooltips rendered in a portal

@@ -2,6 +2,7 @@
   --step-indicator-size: 1.75rem;
   --step-line-height: 0.5rem;
   --step-line-offset: 1.438rem;
+  --step-line-length: 1.5rem;
 
   --step-indicator-content-size: 1rem;
 
@@ -143,4 +144,68 @@
   height: var(--step-indicator-content-size);
   width: var(--step-indicator-content-size);
   color: var(--step-complete-indicator-svg-color);
+}
+
+/*
+  vertical orientation
+
+  Only the arrangement changes: steps stack in a column and each label sits
+  beside its indicator instead of beneath it. Sizes, colors and status styles
+  are inherited from the shared tokens above, so the connector remains
+  --step-line-height thick and picks up --step-current-complete-line-border-color
+  from the existing status rules.
+*/
+
+.Stepper--vertical {
+  flex-direction: column;
+}
+
+.Stepper--vertical .Stepper__step {
+  flex: 0 0 auto;
+  padding: calc(var(--step-line-length) + var(--space-half) * 2) 0 0;
+}
+
+.Stepper--vertical .Stepper__step:first-child {
+  padding-top: 0;
+}
+
+/*
+  The horizontal connector centers itself on the indicator vertically; the
+  vertical connector uses the same expression to center itself horizontally.
+*/
+.Stepper--vertical .Stepper__step-line {
+  top: var(--space-half);
+  right: auto;
+  left: calc((var(--step-indicator-size) - var(--step-line-height)) / 2);
+  height: var(--step-line-length);
+  border-top: 0;
+  border-left: var(--step-line-height) solid var(--step-line-color);
+}
+
+/*
+  The status rule above sets border-color, which the border-left shorthand
+  would otherwise win against at this specificity.
+*/
+.Stepper--vertical .Stepper__step--current-line,
+.Stepper--vertical .Stepper__step--complete-line {
+  border-color: var(--step-current-complete-line-border-color);
+}
+
+.Stepper--vertical .Stepper__step-content {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--space-smallest);
+}
+
+/*
+  Centering a box the height of the indicator keeps a single-line label aligned
+  with the indicator without over-spacing labels that wrap onto more lines.
+*/
+.Stepper--vertical .Stepper__step-label {
+  display: flex;
+  width: auto;
+  min-height: var(--step-indicator-size);
+  align-items: center;
+  padding-top: 0;
+  text-align: left;
 }
